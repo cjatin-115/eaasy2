@@ -1,365 +1,517 @@
 // src/data/aoaCodes.js
 export const AOA_CODES = [
   {
-    title: "1️⃣ Binary Search",
+    title: "🧑‍🎓 Student Class Program",
     code: `
-int binarySearch(int arr[], int n, int key) {
-  int low = 0, high = n - 1;
-  while (low <= high) {
-    int mid = (low + high) / 2;
-    if (arr[mid] == key)
-      return mid;
-    else if (arr[mid] < key)
-      low = mid + 1;
-    else
-      high = mid - 1;
-  }
-  return -1;
-}`,
-  },
-  {
-    title: "2️⃣ Selection Sort",
-    code: `
-void selectionSort(int arr[], int n) {
-  for (int i = 0; i < n - 1; i++) {
-    int min_idx = i;
-    for (int j = i + 1; j < n; j++)
-      if (arr[j] < arr[min_idx])
-        min_idx = j;
-    int temp = arr[min_idx];
-    arr[min_idx] = arr[i];
-    arr[i] = temp;
-  }
-}`,
-  },
-  {
-    title: "3️⃣ Insertion Sort",
-    code: `
-void insertionSort(int arr[], int n) {
-  for (int i = 1; i < n; i++) {
-    int key = arr[i];
-    int j = i - 1;
-    while (j >= 0 && arr[j] > key) {
-      arr[j + 1] = arr[j];
-      j--;
+import java.util.*;
+
+class Student {
+    String name;
+    int rollNumber;
+    float marks;
+
+    void input() {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter name: ");
+        name = sc.nextLine();
+        System.out.print("Enter roll number: ");
+        rollNumber = sc.nextInt();
+        System.out.print("Enter marks: ");
+        marks = sc.nextFloat();
     }
-    arr[j + 1] = key;
-  }
-}`,
-  },
-  {
-    title: "4️⃣ Merge Sort",
-    code: `
-void merge(int arr[], int l, int m, int r) {
-  int n1 = m - l + 1;
-  int n2 = r - m;
-  int L[n1], R[n2];
-  for (int i = 0; i < n1; i++) L[i] = arr[l + i];
-  for (int j = 0; j < n2; j++) R[j] = arr[m + 1 + j];
-  int i = 0, j = 0, k = l;
-  while (i < n1 && j < n2) {
-    if (L[i] <= R[j]) arr[k++] = L[i++];
-    else arr[k++] = R[j++];
-  }
-  while (i < n1) arr[k++] = L[i++];
-  while (j < n2) arr[k++] = R[j++];
-}
 
-void mergeSort(int arr[], int l, int r) {
-  if (l < r) {
-    int m = l + (r - l) / 2;
-    mergeSort(arr, l, m);
-    mergeSort(arr, m + 1, r);
-    merge(arr, l, m, r);
-  }
-}`,
-  },
-  {
-    title: "5️⃣ Quick Sort",
-    code: `
-int partition(int arr[], int low, int high) {
-  int pivot = arr[high];
-  int i = (low - 1);
-  for (int j = low; j <= high - 1; j++) {
-    if (arr[j] < pivot) {
-      i++;
-      int temp = arr[i];
-      arr[i] = arr[j];
-      arr[j] = temp;
+    void display() {
+        System.out.println("Name: " + name);
+        System.out.println("Roll Number: " + rollNumber);
+        System.out.println("Marks: " + marks);
     }
-  }
-  int temp = arr[i + 1];
-  arr[i + 1] = arr[high];
-  arr[high] = temp;
-  return (i + 1);
+
+    public static void main(String[] args) {
+        Student s = new Student();
+        s.input();
+        s.display();
+    }
+}
+    `,
+  },
+  {
+    title: "🏦 BankAccount Class Program",
+    code: `
+import java.util.*;
+
+class BankAccount {
+    String name;
+    int accNo;
+    double balance;
+
+    void input(Scanner sc) {
+        System.out.print("Enter name: ");
+        name = sc.nextLine();
+        System.out.print("Enter account number: ");
+        accNo = sc.nextInt();
+        System.out.print("Enter balance: ");
+        balance = sc.nextDouble();
+    }
+
+    void deposit(double amt) { balance += amt; }
+    void withdraw(double amt) { balance -= amt; }
+
+    void display() {
+        System.out.println("Name: " + name);
+        System.out.println("Account No: " + accNo);
+        System.out.println("Balance: " + balance);
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        BankAccount b = new BankAccount();
+        b.input(sc);
+        System.out.print("Enter amount to deposit: ");
+        b.deposit(sc.nextDouble());
+        System.out.print("Enter amount to withdraw: ");
+        b.withdraw(sc.nextDouble());
+        b.display();
+        sc.close();
+    }
+}
+    `,
+  },
+  {
+    title: "💼 Employee Class Program",
+    code: `
+import java.util.*;
+
+class Employee {
+    String name;
+    int id;
+    double salary;
+
+    void input() {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter name: ");
+        name = sc.nextLine();
+        System.out.print("Enter id: ");
+        id = sc.nextInt();
+        System.out.print("Enter salary: ");
+        salary = sc.nextDouble();
+    }
+
+    void display() {
+        System.out.println("Name: " + name);
+        System.out.println("ID: " + id);
+        System.out.println("Salary: " + salary);
+    }
+
+    public static void main(String[] args) {
+        Employee e = new Employee();
+        e.input();
+        e.display();
+    }
+}
+    `,
+  },
+  {
+    title: "🔢 Even or Odd Program",
+    code: `
+import java.io.*;
+
+class EvenOdd {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        System.out.print("Enter a number: ");
+        int n = Integer.parseInt(br.readLine());
+        System.out.println(n % 2 == 0 ? "Even" : "Odd");
+    }
+}
+    `,
+  },
+  {
+    title: "📏 Rectangle Area Program",
+    code: `
+import java.util.Scanner;
+
+public class Rectangle {
+    double l, b;
+    Scanner sc = new Scanner(System.in);
+
+    void input() {
+        System.out.print("Enter length and breadth: ");
+        l = sc.nextDouble();
+        b = sc.nextDouble();
+    }
+
+    void area() {
+        System.out.println("Area of Rectangle: " + (l * b));
+    }
+
+    public static void main(String[] args) {
+        Rectangle r = new Rectangle();
+        r.input();
+        r.area();
+    }
+}
+    `,
+  },
+  {
+    title: "🔢 NumberFormatException Example",
+    code: `
+import java.util.Scanner;
+
+public class NumberFormatExample {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter a number: ");
+        String input = sc.nextLine();
+
+        try {
+            int number = Integer.parseInt(input);
+            System.out.println("You entered number: " + number);
+        } 
+        catch (NumberFormatException e) {
+            System.out.println("Error: Invalid number format! Please enter digits only.");
+        }
+
+        sc.close();
+    }
+}
+    `,
+  },
+  {
+    title: "⚠️ ArithmeticException Example",
+    code: `
+import java.util.Scanner;
+
+public class ArithmeticExceptionExample {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter numerator: ");
+        int numerator = sc.nextInt();
+
+        System.out.print("Enter denominator: ");
+        int denominator = sc.nextInt();
+
+        try {
+            int result = numerator / denominator;
+            System.out.println("Result: " + result);
+        } 
+        catch (ArithmeticException e) {
+            System.out.println("Error: Division by zero is not allowed!");
+        }
+
+        sc.close();
+    }
+}
+    `,
+  },
+  {
+    title: "🌈 Automatic Background Color Changer",
+    code: `
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Automatic Background Color Changer</title>
+  <style>
+    body {
+      text-align: center;
+      font-family: Arial, sans-serif;
+      color: white;
+      transition: background-color 1s ease;
+      margin-top: 200px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🌈 Background Color Changing Automatically</h1>
+  <p>Watch the background color change every 5 seconds!</p>
+
+  <script>
+    function getRandomColor() {
+      let letters = '0123456789ABCDEF';
+      let color = '#';
+      for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
+    }
+
+    function changeBackgroundColor() {
+      let newColor = getRandomColor();
+      document.body.style.backgroundColor = newColor;
+      console.log("Background changed to:", newColor);
+    }
+
+    setInterval(changeBackgroundColor, 5000);
+    changeBackgroundColor();
+  </script>
+</body>
+</html>
+    `,
+  },
+  {
+    title: "📧 Email Validation Form",
+    code: `
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Email Validation using JavaScript</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 150px;
+      background-color: #f2f2f2;
+    }
+    form {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      display: inline-block;
+      box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+    }
+    input {
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      width: 250px;
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover { background-color: #0056b3; }
+    #message { margin-top: 10px; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h2>Email Validation Form</h2>
+  <form onsubmit="return validateEmail()">
+    <label>Enter your email: </label><br><br>
+    <input type="text" id="email" placeholder="example@gmail.com" onkeyup="checkEmail()"><br><br>
+    <button type="submit">Submit</button>
+    <div id="message"></div>
+  </form>
+
+  <script>
+    const pattern = /^[^ ]+@[^ ]+\\.[a-z]{2,3}$/;
+
+    function validateEmail() {
+      let email = document.getElementById("email").value;
+      if (email.match(pattern)) {
+        alert("✅ Email is valid!");
+        return true;
+      } else {
+        alert("❌ Invalid email! Please re-enter a valid email address.");
+        document.getElementById("email").focus();
+        return false;
+      }
+    }
+
+    function checkEmail() {
+      let email = document.getElementById("email").value;
+      let msg = document.getElementById("message");
+      if (email === "") { msg.textContent = ""; return; }
+      if (email.match(pattern)) {
+        msg.textContent = "✅ Looks good!";
+        msg.style.color = "green";
+      } else {
+        msg.textContent = "❌ Invalid email format";
+        msg.style.color = "red";
+      }
+    }
+  </script>
+</body>
+</html>
+    `,
+  },
+  {
+    title: "🚗 Multi-Level Inheritance - Maruti800",
+    code: `
+import java.util.Scanner;
+
+public class Maruti800 extends Maruti {
+    int speed;
+
+    void setSpeed(int s) { speed = s; }
+    void displaySpeed() { System.out.println("Speed: " + speed + " km/h"); }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        Maruti800 car = new Maruti800();
+
+        System.out.print("Enter Vehicle Type: ");
+        car.setVehicleType(sc.nextLine());
+        System.out.print("Enter Brand: ");
+        car.setBrand(sc.nextLine());
+        System.out.print("Enter Speed (km/h): ");
+        car.setSpeed(sc.nextInt());
+
+        System.out.println("\\n--- Vehicle Details ---");
+        car.displayVehicleType();
+        car.displayBrand();
+        car.displaySpeed();
+
+        sc.close();
+    }
 }
 
-void quickSort(int arr[], int low, int high) {
-  if (low < high) {
-    int pi = partition(arr, low, high);
-    quickSort(arr, low, pi - 1);
-    quickSort(arr, pi + 1, high);
-  }
-}`,
-  },
-  {
-    title: "6️⃣ Fractional Knapsack",
-    code: `
-def fractional_knapsack(values, weights, capacity):
-    ratio_items = [(values[i] / weights[i], values[i], weights[i]) for i in range(len(values))]
-    ratio_items.sort(reverse=True, key=lambda x: x[0])
-    total_value = 0.0
-    remaining_capacity = capacity
-
-    for ratio, value, weight in ratio_items:
-        if remaining_capacity == 0:
-            break
-        if weight <= remaining_capacity:
-            total_value += value
-            remaining_capacity -= weight
-        else:
-            total_value += ratio * remaining_capacity
-            remaining_capacity = 0
-    return total_value
-
-
-n = int(input("Enter number of items: "))
-values = list(map(float, input("Enter values of items: ").split()))
-weights = list(map(float, input("Enter weights of items: ").split()))
-capacity = float(input("Enter knapsack capacity: "))
-max_value = fractional_knapsack(values, weights, capacity)
-print("Maximum value in Knapsack (fractional):", max_value)
-`,
-  },
-  {
-    title: "7️⃣ Prim's Algorithm",
-    code: `
-import sys
-
-V = 5  # Number of vertices
-
-def min_key(key, mst_set):
-    min_val = sys.maxsize
-    min_index = -1
-    for v in range(V):
-        if key[v] < min_val and not mst_set[v]:
-            min_val = key[v]
-            min_index = v
-    return min_index
-
-def print_mst(parent, graph):
-    print("Edge \tWeight")
-    for i in range(1, V):
-        print(f"{parent[i]} - {i} \t{graph[i][parent[i]]}")
-
-def prim_mst(graph):
-    key = [sys.maxsize] * V
-    parent = [None] * V
-    mst_set = [False] * V
-
-    key[0] = 0
-    parent[0] = -1
-
-    for _ in range(V):
-        u = min_key(key, mst_set)
-        mst_set[u] = True
-        for v in range(V):
-            if graph[u][v] and not mst_set[v] and graph[u][v] < key[v]:
-                key[v] = graph[u][v]
-                parent[v] = u
-    print_mst(parent, graph)
-
-graph = [
-    [0, 2, 0, 6, 0],
-    [2, 0, 3, 8, 5],
-    [0, 3, 0, 0, 7],
-    [6, 8, 0, 0, 9],
-    [0, 5, 7, 9, 0]
-]
-
-prim_mst(graph)
-`,
-  },
-  {
-    title: "8️⃣ Floyd–Warshall Algorithm",
-    code: `
-INF = 99999
-V = 4
-
-def floyd_warshall(graph):
-    dist = [row[:] for row in graph]
-    for k in range(V):
-        for i in range(V):
-            for j in range(V):
-                dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])
-    print_solution(dist)
-
-def print_solution(dist):
-    print("Shortest distance matrix:")
-    for i in range(V):
-        for j in range(V):
-            if dist[i][j] == INF:
-                print("INF", end="\\t")
-            else:
-                print(dist[i][j], end="\\t")
-        print()
-
-graph = [
-    [0, 3, INF, 7],
-    [8, 0, 2, INF],
-    [5, INF, 0, 1],
-    [2, INF, INF, 0]
-]
-
-floyd_warshall(graph)
-`,
-  },
-  {
-    title: "9️⃣ LCS (Longest Common Subsequence)",
-    code: `
-def lcs(X, Y):
-    m, n = len(X), len(Y)
-    L = [[0] * (n + 1) for _ in range(m + 1)]
-
-    for i in range(m + 1):
-        for j in range(n + 1):
-            if i == 0 or j == 0:
-                L[i][j] = 0
-            elif X[i - 1] == Y[j - 1]:
-                L[i][j] = 1 + L[i - 1][j - 1]
-            else:
-                L[i][j] = max(L[i - 1][j], L[i][j - 1])
-
-    i, j = m, n
-    lcs_str = []
-    while i > 0 and j > 0:
-        if X[i - 1] == Y[j - 1]:
-            lcs_str.append(X[i - 1])
-            i -= 1
-            j -= 1
-        elif L[i - 1][j] > L[i][j - 1]:
-            i -= 1
-        else:
-            j -= 1
-
-    return L[m][n], ''.join(reversed(lcs_str))
-
-X = input("Enter first string: ")
-Y = input("Enter second string: ")
-length, subseq = lcs(X, Y)
-print("Length of LCS:", length)
-print("LCS:", subseq)
-`,
-  },
-  {
-    title: "🔟 DFS & BFS",
-    code: `
-from collections import deque
-
-graph = {
-    'A': ['B', 'C'],
-    'B': ['D', 'E'],
-    'C': ['F'],
-    'D': [],
-    'E': ['F'],
-    'F': []
+class Maruti extends Car {
+    String brand;
+    void setBrand(String b) { brand = b; }
+    void displayBrand() { System.out.println("Brand: " + brand); }
 }
 
-def dfs(graph, node, visited=None):
-    if visited is None:
-        visited = set()
-    if node not in visited:
-        print(node, end=" ")
-        visited.add(node)
-        for neighbor in graph[node]:
-            dfs(graph, neighbor, visited)
-    return visited
-
-def bfs(graph, start):
-    visited = set()
-    queue = deque([start])
-    visited.add(start)
-    while queue:
-        node = queue.popleft()
-        print(node, end=" ")
-        for neighbor in graph[node]:
-            if neighbor not in visited:
-                visited.add(neighbor)
-                queue.append(neighbor)
-
-print("DFS Traversal (starting from A):")
-dfs(graph, 'A')
-print("\\nBFS Traversal (starting from A):")
-bfs(graph, 'A')
-`,
+class Car {
+    String vehicleType;
+    void setVehicleType(String type) { vehicleType = type; }
+    void displayVehicleType() { System.out.println("Vehicle Type: " + vehicleType); }
+}
+    `,
   },
   {
-    title: "1️⃣1️⃣ N-Queen Problem",
+    title: "🔺 Abstract Class Example - ShapeDemo",
     code: `
-def print_board(positions, N):
-    for r in range(N):
-        line = ""
-        for c in range(N):
-            line += "Q" if positions[r] == c else "."
-        print(line)
-    print()
+import java.util.Scanner;
 
-def solve_n_queens(N):
-    solutions = []
-    positions = [-1] * N
-    cols, diag1, diag2 = set(), set(), set()
+public class ShapeDemo {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
 
-    def backtrack(row=0):
-        if row == N:
-            solutions.append(positions.copy())
-            return
-        for col in range(N):
-            d1, d2 = row + col, row - col
-            if col in cols or d1 in diag1 or d2 in diag2:
-                continue
-            positions[row] = col
-            cols.add(col); diag1.add(d1); diag2.add(d2)
-            backtrack(row + 1)
-            positions[row] = -1
-            cols.remove(col); diag1.remove(d1); diag2.remove(d2)
+        Rectangle rect = new Rectangle();
+        System.out.println("=== Rectangle ===");
+        rect.getData(sc);
+        rect.displayArea();
 
-    backtrack()
-    return solutions
+        Triangle tri = new Triangle();
+        System.out.println("\\n=== Triangle ===");
+        tri.getData(sc);
+        tri.displayArea();
 
-def main():
-    N = int(input("Enter number of queens (N): "))
-    sols = solve_n_queens(N)
-    print(f"\\nTotal solutions for {N}-Queens: {len(sols)}\\n")
-    for i, sol in enumerate(sols, start=1):
-        print(f"Solution #{i}:")
-        print_board(sol, N)
+        sc.close();
+    }
+}
 
-if __name__ == "__main__":
-    main()
-`,
+abstract class Shape {
+    double dim1, dim2;
+    void getData(Scanner sc) {
+        System.out.print("Enter first dimension: ");
+        dim1 = sc.nextDouble();
+        System.out.print("Enter second dimension: ");
+        dim2 = sc.nextDouble();
+    }
+    abstract void displayArea();
+}
+
+class Rectangle extends Shape {
+    void displayArea() { System.out.println("Area of Rectangle: " + dim1*dim2); }
+}
+
+class Triangle extends Shape {
+    void displayArea() { System.out.println("Area of Triangle: " + 0.5*dim1*dim2); }
+}
+    `,
   },
   {
-    title: "1️⃣2️⃣ Naive String Matching",
+    title: "🔐 Design a login webpage in JSP that makes validation through Database using JDBCp",
     code: `
-def naive_string_match(text, pattern):
-    n, m = len(text), len(pattern)
-    found = False
-    for i in range(n - m + 1):
-        j = 0
-        while j < m and text[i + j] == pattern[j]:
-            j += 1
-        if j == m:
-            print(f"Pattern found at index {i}")
-            found = True
-    if not found:
-        print("Pattern not found")
+import java.util.HashMap;
+import java.util.Scanner;
 
-text = "ABAAABCDBBABCDDEBCABC"
-pattern = "ABC"
-print("Text:", text)
-print("Pattern:", pattern)
-print("\\nNaive String Matching Result:")
-naive_string_match(text, pattern)
-`,
+public class LoginDemo {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        HashMap<String, String> users = new HashMap<>();
+        users.put("mayur", "12345");
+        users.put("admin", "admin123");
+        users.put("user1", "pass1");
+
+        System.out.println("=== Login Page ===");
+        System.out.print("Enter username: ");
+        String username = sc.nextLine();
+        System.out.print("Enter password: ");
+        String password = sc.nextLine();
+
+        if(users.containsKey(username) && users.get(username).equals(password)) {
+            System.out.println("✅ Login Successful! Welcome, " + username);
+        } else {
+            System.out.println("❌ Invalid username or password! Try again.");
+        }
+
+        sc.close();
+    }
+}
+    `,
   },
+  {
+    title: "🔄 WAP to demonstrate  method and constructor overloading",
+    code: `
+import java.util.Scanner;
+
+public class OverloadingDemo {
+    String name;
+    int age;
+
+    OverloadingDemo() { name="Unknown"; age=0; }
+    OverloadingDemo(String n, int a) { name=n; age=a; }
+
+    void display() { System.out.println("Name: " + name + "\\nAge: " + age); }
+    void display(String greeting) { System.out.println(greeting + " " + name + "! Your age is " + age); }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        OverloadingDemo obj1 = new OverloadingDemo();
+        System.out.println("=== Object 1 ===");
+        obj1.display();
+
+        System.out.print("\\nEnter your name: ");
+        String n = sc.nextLine();
+        System.out.print("Enter your age: ");
+        int a = sc.nextInt();
+
+        OverloadingDemo obj2 = new OverloadingDemo(n, a);
+        System.out.println("=== Object 2 ===");
+        obj2.display();
+        obj2.display("Hello");
+
+        sc.close();
+    }
+}
+    `,
+  },
+  {
+    title: "Program to create a static website using HTML and CSS",
+    code: `14, <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Static Website</title>
+<style>
+body { font-family: Arial; margin:0; text-align:center; background:#f0f0f0; }
+header { background:#007bff; color:white; padding:15px; }
+section { padding:20px; }
+footer { background:#333; color:white; padding:10px; position:fixed; bottom:0; width:100%; }
+</style>
+</head>
+<body>
+<header><h1>Welcome to My Website</h1></header>
+<section>
+  <h2>About</h2>
+  <p>This is a simple static website created using HTML and CSS.</p>
+</section>
+<footer>&copy; 2025 My Website</footer>
+</body>
+</html>
+    `,
+  }
 ];
