@@ -1,5 +1,5 @@
 // src/data/aoaCodes.js
-export const AOA_CODES = [
+export const JAVA_CODES = [
   {
     title: "🧑‍🎓 Student Class Program",
     code: `
