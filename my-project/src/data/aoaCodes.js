@@ -1,7 +1,7 @@
 // src/data/aoaCodes.js
 export const JAVA_CODES = [
   {
-    title: "🧑‍🎓 Student Class Program",
+    title: "1 🧑‍🎓 Student Class Program",
     code: `
 import java.util.*;
 
@@ -35,7 +35,7 @@ class Student {
     `,
   },
   {
-    title: "🏦 BankAccount Class Program",
+    title: "2 BankAccount Class Program",
     code: `
 import java.util.*;
 
@@ -77,7 +77,7 @@ class BankAccount {
     `,
   },
   {
-    title: "💼 Employee Class Program",
+    title: "3 Employee Class Program",
     code: `
 import java.util.*;
 
@@ -111,7 +111,7 @@ class Employee {
     `,
   },
   {
-    title: "🔢 Even or Odd Program",
+    title: "4 Even or Odd Program",
     code: `
 import java.io.*;
 
@@ -126,7 +126,7 @@ class EvenOdd {
     `,
   },
   {
-    title: "📏 Rectangle Area Program",
+    title: "5 Rectangle Area Program",
     code: `
 import java.util.Scanner;
 
@@ -152,61 +152,8 @@ public class Rectangle {
 }
     `,
   },
-  {
-    title: "🔢 NumberFormatException Example",
-    code: `
-import java.util.Scanner;
-
-public class NumberFormatExample {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-
-        System.out.print("Enter a number: ");
-        String input = sc.nextLine();
-
-        try {
-            int number = Integer.parseInt(input);
-            System.out.println("You entered number: " + number);
-        } 
-        catch (NumberFormatException e) {
-            System.out.println("Error: Invalid number format! Please enter digits only.");
-        }
-
-        sc.close();
-    }
-}
-    `,
-  },
-  {
-    title: "⚠️ ArithmeticException Example",
-    code: `
-import java.util.Scanner;
-
-public class ArithmeticExceptionExample {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-
-        System.out.print("Enter numerator: ");
-        int numerator = sc.nextInt();
-
-        System.out.print("Enter denominator: ");
-        int denominator = sc.nextInt();
-
-        try {
-            int result = numerator / denominator;
-            System.out.println("Result: " + result);
-        } 
-        catch (ArithmeticException e) {
-            System.out.println("Error: Division by zero is not allowed!");
-        }
-
-        sc.close();
-    }
-}
-    `,
-  },
-  {
-    title: "🌈 Automatic Background Color Changer",
+    {
+    title: "6 Automatic Background Color Changer",
     code: `
 <!DOCTYPE html>
 <html>
@@ -250,7 +197,7 @@ public class ArithmeticExceptionExample {
     `,
   },
   {
-    title: "📧 Email Validation Form",
+    title: "7 Email Validation Form",
     code: `
 <!DOCTYPE html>
 <html>
@@ -333,7 +280,61 @@ public class ArithmeticExceptionExample {
     `,
   },
   {
-    title: "🚗 Multi-Level Inheritance - Maruti800",
+    title: "8 NumberFormatException Example",
+    code: `
+import java.util.Scanner;
+
+public class NumberFormatExample {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter a number: ");
+        String input = sc.nextLine();
+
+        try {
+            int number = Integer.parseInt(input);
+            System.out.println("You entered number: " + number);
+        } 
+        catch (NumberFormatException e) {
+            System.out.println("Error: Invalid number format! Please enter digits only.");
+        }
+
+        sc.close();
+    }
+}
+    `,
+  },
+  {
+    title: "9 ArithmeticException Example",
+    code: `
+import java.util.Scanner;
+
+public class ArithmeticExceptionExample {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter numerator: ");
+        int numerator = sc.nextInt();
+
+        System.out.print("Enter denominator: ");
+        int denominator = sc.nextInt();
+
+        try {
+            int result = numerator / denominator;
+            System.out.println("Result: " + result);
+        } 
+        catch (ArithmeticException e) {
+            System.out.println("Error: Division by zero is not allowed!");
+        }
+
+        sc.close();
+    }
+}
+    `,
+  },
+
+  {
+    title: "10 Multi-Level Inheritance - Maruti800",
     code: `
 import java.util.Scanner;
 
@@ -377,7 +378,7 @@ class Car {
     `,
   },
   {
-    title: "🔺 Abstract Class Example - ShapeDemo",
+    title: "11 Abstract Class Example - ShapeDemo",
     code: `
 import java.util.Scanner;
 
@@ -420,7 +421,7 @@ class Triangle extends Shape {
     `,
   },
   {
-    title: "🔐 Design a login webpage in JSP that makes validation through Database using JDBCp",
+    title: "12 Design a login webpage in JSP that makes validation through Database using JDBCp",
     code: `
 import java.util.HashMap;
 import java.util.Scanner;
@@ -452,7 +453,7 @@ public class LoginDemo {
     `,
   },
   {
-    title: "🔄 WAP to demonstrate  method and constructor overloading",
+    title: "13 WAP to demonstrate  method and constructor overloading",
     code: `
 import java.util.Scanner;
 
@@ -489,8 +490,8 @@ public class OverloadingDemo {
     `,
   },
   {
-    title: "Program to create a static website using HTML and CSS",
-    code: `14, <!DOCTYPE html>
+    title: " 14 Program to create a static website using HTML and CSS",
+    code: ` <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
