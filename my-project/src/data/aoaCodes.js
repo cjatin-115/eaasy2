@@ -431,7 +431,7 @@ public class LoginDemo {
         Scanner sc = new Scanner(System.in);
 
         HashMap<String, String> users = new HashMap<>();
-        users.put("mayur", "12345");
+        users.put("NICK", "12345");
         users.put("admin", "admin123");
         users.put("user1", "pass1");
 
