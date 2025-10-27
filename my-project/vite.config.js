@@ -15,7 +15,7 @@ export default defineConfig({
         'masked-icon.svg'
       ],
       manifest: {
-        name: 'AOA Codes',
+        name: 'JAVA Codes',
         short_name: 'AOA',
         description: 'Offline AOA internal exam code viewer',
         theme_color: '#0f172a',
