@@ -1,518 +1,505 @@
 // src/data/aoaCodes.js
 export const JAVA_CODES = [
   {
-    title: "1 🧑‍🎓 Student Class Program",
+    title: "database creation",
     code: `
-import java.util.*;
-
-class Student {
-    String name;
-    int rollNumber;
-    float marks;
-
-    void input() {
-        Scanner sc = new Scanner(System.in);
-        System.out.print("Enter name: ");
-        name = sc.nextLine();
-        System.out.print("Enter roll number: ");
-        rollNumber = sc.nextInt();
-        System.out.print("Enter marks: ");
-        marks = sc.nextFloat();
-    }
-
-    void display() {
-        System.out.println("Name: " + name);
-        System.out.println("Roll Number: " + rollNumber);
-        System.out.println("Marks: " + marks);
-    }
-
-    public static void main(String[] args) {
-        Student s = new Student();
-        s.input();
-        s.display();
-    }
-}
+create database school;
+use school;
     `,
   },
   {
-    title: "2 BankAccount Class Program",
+    title: "EXP-2 :Performing practical by using DDL statements",
     code: `
-import java.util.*;
+    CREATE TABLE students (
+  id INT PRIMARY KEY,
+  name VARCHAR(50) NOT NULL,
+  age INT CHECK (age >= 18),
+  marks INT CHECK (marks >= 0 AND marks <= 100),
+  email VARCHAR(100) UNIQUE
+);
 
-class BankAccount {
-    String name;
-    int accNo;
-    double balance;
+INSERT INTO students (id, name, age, marks, email) VALUES (1, 'Alice', 20, 85, 'alice@example.com');
 
-    void input(Scanner sc) {
-        System.out.print("Enter name: ");
-        name = sc.nextLine();
-        System.out.print("Enter account number: ");
-        accNo = sc.nextInt();
-        System.out.print("Enter balance: ");
-        balance = sc.nextDouble();
-    }
+ALTER TABLE students
+ADD CONSTRAINT unique_email UNIQUE(email);
 
-    void deposit(double amt) { balance += amt; }
-    void withdraw(double amt) { balance -= amt; }
+select * from students;
 
-    void display() {
-        System.out.println("Name: " + name);
-        System.out.println("Account No: " + accNo);
-        System.out.println("Balance: " + balance);
-    }
-
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        BankAccount b = new BankAccount();
-        b.input(sc);
-        System.out.print("Enter amount to deposit: ");
-        b.deposit(sc.nextDouble());
-        System.out.print("Enter amount to withdraw: ");
-        b.withdraw(sc.nextDouble());
-        b.display();
-        sc.close();
-    }
-}
+DROP TABLE students;
     `,
   },
   {
-    title: "3 Employee Class Program",
+    title: "EXP-3 Performing practical by using Aggregate functions.",
     code: `
-import java.util.*;
+    CREATE TABLE students (
+  id INT PRIMARY KEY,
+  name VARCHAR(50) NOT NULL,
+  age INT CHECK (age >= 18),
+  marks INT CHECK (marks >= 0 AND marks <= 100),
+  email VARCHAR(100) UNIQUE
+);
 
-class Employee {
-    String name;
-    int id;
-    double salary;
+INSERT INTO students (id, name, age, marks, email) VALUES (1, 'Alice', 20, 85, 'alice@example.com');
 
-    void input() {
-        Scanner sc = new Scanner(System.in);
-        System.out.print("Enter name: ");
-        name = sc.nextLine();
-        System.out.print("Enter id: ");
-        id = sc.nextInt();
-        System.out.print("Enter salary: ");
-        salary = sc.nextDouble();
-    }
+SELECT COUNT(*) FROM students;
 
-    void display() {
-        System.out.println("Name: " + name);
-        System.out.println("ID: " + id);
-        System.out.println("Salary: " + salary);
-    }
+SELECT SUM(marks) FROM students;
 
-    public static void main(String[] args) {
-        Employee e = new Employee();
-        e.input();
-        e.display();
-    }
-}
+SELECT AVG(marks) FROM students;
+
+SELECT MAX(marks) FROM students;
+
+SELECT MIN(marks) FROM students;
     `,
   },
   {
-    title: "4 Even or Odd Program",
+    title: "EXP-4 Performing practical by using SET operators like Union,Intersect etc.",
     code: `
-import java.io.*;
+## TABLES ##
+CREATE TABLE students (
+  id INT PRIMARY KEY,
+  name VARCHAR(50)
+);
+CREATE TABLE teachers (
+  id INT PRIMARY KEY,
+  name VARCHAR(50)
+);
 
-class EvenOdd {
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        System.out.print("Enter a number: ");
-        int n = Integer.parseInt(br.readLine());
-        System.out.println(n % 2 == 0 ? "Even" : "Odd");
-    }
-}
+##  SAMPLE ##
+INSERT INTO students VALUES
+(1, 'Charas'),
+(2, 'Rahul'),
+(3, 'Amit');
+INSERT INTO teachers VALUES
+(1, 'Amit'),
+(2, 'Suresh'),
+(3, 'Mohan');
+
+SELECT name FROM students
+UNION
+SELECT name FROM teachers;
+
+SELECT name FROM students
+INTERSECT
+SELECT name FROM teachers;
+
+SELECT name FROM students
+EXCEPT
+SELECT name FROM teachers;
     `,
   },
   {
-    title: "5 Rectangle Area Program",
+    title: "EXP-5 Perform practical by using GROUP BY and ORDERBY Clause.",
     code: `
-import java.util.Scanner;
+    CREATE TABLE students (
+  id INT PRIMARY KEY,
+  name VARCHAR(50) NOT NULL,
+  age INT CHECK (age >= 18),
+  marks INT CHECK (marks >= 0 AND marks <= 100),
+  course VARCHAR(50) NOT NULL,
+  email VARCHAR(100) UNIQUE
+);
 
-public class Rectangle {
-    double l, b;
-    Scanner sc = new Scanner(System.in);
+INSERT INTO students (id, name, age, marks, courses, email) VALUES (1, 'Alice', 20, 85, 'cs', 'alice@example.com');
 
-    void input() {
-        System.out.print("Enter length and breadth: ");
-        l = sc.nextDouble();
-        b = sc.nextDouble();
-    }
+SELECT course, COUNT(*) AS total_students
+FROM students
+GROUP BY course;  --{groups student on courses and counts them}
 
-    void area() {
-        System.out.println("Area of Rectangle: " + (l * b));
-    }
+SELECT name, marks
+FROM students
+ORDER BY marks DESC;
 
-    public static void main(String[] args) {
-        Rectangle r = new Rectangle();
-        r.input();
-        r.area();
-    }
-}
+SELECT course, AVG(marks) AS avg_marks
+FROM students
+GROUP BY course
+ORDER BY avg_marks DESC;
     `,
   },
     {
-    title: "6 Automatic Background Color Changer",
+    title: "EXP-6 Perform practical by using HAVING Clause.",
     code: `
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Automatic Background Color Changer</title>
-  <style>
-    body {
-      text-align: center;
-      font-family: Arial, sans-serif;
-      color: white;
-      transition: background-color 1s ease;
-      margin-top: 200px;
-    }
-  </style>
-</head>
-<body>
-  <h1>🌈 Background Color Changing Automatically</h1>
-  <p>Watch the background color change every 5 seconds!</p>
+    CREATE TABLE students (
+  id INT PRIMARY KEY,
+  name VARCHAR(50) NOT NULL,
+  age INT CHECK (age >= 18),
+  marks INT CHECK (marks >= 0 AND marks <= 100),
+  course VARCHAR(50) NOT NULL,
+  email VARCHAR(100) UNIQUE
+);
 
-  <script>
-    function getRandomColor() {
-      let letters = '0123456789ABCDEF';
-      let color = '#';
-      for (let i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
-      }
-      return color;
-    }
+INSERT INTO students (id, name, age, marks, course, email) VALUES (1, 'Alice', 20, 85, 'cs', 'alice@example.com');
 
-    function changeBackgroundColor() {
-      let newColor = getRandomColor();
-      document.body.style.backgroundColor = newColor;
-      console.log("Background changed to:", newColor);
-    }
+SELECT course, COUNT(*) AS total_students
+FROM students
+GROUP BY course
+HAVING COUNT(*) ;
 
-    setInterval(changeBackgroundColor, 5000);
-    changeBackgroundColor();
-  </script>
-</body>
-</html>
+SELECT course, AVG(marks) AS avg_marks
+FROM students
+GROUP BY course
+HAVING AVG(marks) ;
+
+SELECT course, SUM(marks) AS total_marks
+FROM students
+GROUP BY course
+HAVING SUM(marks) 
+ORDER BY total_marks DESC;
     `,
   },
   {
-    title: "7 Email Validation Form",
+    title: "EXP-7 Execute Queries using Inner JOIN operation.",
     code: `
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Email Validation using JavaScript</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      margin-top: 150px;
-      background-color: #f2f2f2;
-    }
-    form {
-      background: white;
-      padding: 30px;
-      border-radius: 10px;
-      display: inline-block;
-      box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
-    }
-    input {
-      padding: 10px;
-      font-size: 16px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-      width: 250px;
-    }
-    button {
-      margin-top: 10px;
-      padding: 10px 20px;
-      font-size: 16px;
-      background-color: #007BFF;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    button:hover { background-color: #0056b3; }
-    #message { margin-top: 10px; font-weight: bold; }
-  </style>
-</head>
-<body>
-  <h2>Email Validation Form</h2>
-  <form onsubmit="return validateEmail()">
-    <label>Enter your email: </label><br><br>
-    <input type="text" id="email" placeholder="example@gmail.com" onkeyup="checkEmail()"><br><br>
-    <button type="submit">Submit</button>
-    <div id="message"></div>
-  </form>
 
-  <script>
-    const pattern = /^[^ ]+@[^ ]+\\.[a-z]{2,3}$/;
+CREATE TABLE courses (
+  id INT PRIMARY KEY,
+  course_name VARCHAR(50)
+);
+CREATE TABLE students (
+  id INT PRIMARY KEY,
+  name VARCHAR(50),
+  course_id INT,
+  FOREIGN KEY (course_id) REFERENCES courses(id)
+);
 
-    function validateEmail() {
-      let email = document.getElementById("email").value;
-      if (email.match(pattern)) {
-        alert("✅ Email is valid!");
-        return true;
-      } else {
-        alert("❌ Invalid email! Please re-enter a valid email address.");
-        document.getElementById("email").focus();
-        return false;
-      }
-    }
+INSERT INTO courses VALUES
+(1, 'CS'),
+(2, 'IT'),
+(3, 'Mechanical');
+INSERT INTO students VALUES
+(1, 'Jatin', 1),
+(2, 'Rahul', 2),
+(3, 'Amit', 1),
+(4, 'Suresh', NULL);
 
-    function checkEmail() {
-      let email = document.getElementById("email").value;
-      let msg = document.getElementById("message");
-      if (email === "") { msg.textContent = ""; return; }
-      if (email.match(pattern)) {
-        msg.textContent = "✅ Looks good!";
-        msg.style.color = "green";
-      } else {
-        msg.textContent = "❌ Invalid email format";
-        msg.style.color = "red";
-      }
-    }
-  </script>
-</body>
-</html>
+SELECT students.name, courses.course_name
+FROM students
+INNER JOIN courses
+ON students.course_id = courses.id;
+
+SELECT s.name, c.course_name  -- {for multiple tables}
+FROM students s
+INNER JOIN courses c
+ON s.course_id = c.id;
+
     `,
   },
   {
-    title: "8 NumberFormatException Example",
+    title: "EXP-8 Execute Queries using Left outer JOIN operation.",
     code: `
-import java.util.Scanner;
+CREATE TABLE courses (
+  id INT PRIMARY KEY,
+  course_name VARCHAR(50)
+);
+CREATE TABLE students (
+  id INT PRIMARY KEY,
+  name VARCHAR(50),
+  course_id INT,
+  FOREIGN KEY (course_id) REFERENCES courses(id)
+);
 
-public class NumberFormatExample {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+INSERT INTO courses VALUES
+(1, 'CS'),
+(2, 'IT'),
+(3, 'Mechanical');
+INSERT INTO students VALUES
+(1, 'Jatin', 1),
+(2, 'Rahul', 2),
+(3, 'Amit', 1),
+(4, 'Suresh', NULL);
 
-        System.out.print("Enter a number: ");
-        String input = sc.nextLine();
+SELECT students.name, courses.course_name
+FROM students
+LEFT JOIN courses
+ON students.course_id = courses.id;
 
-        try {
-            int number = Integer.parseInt(input);
-            System.out.println("You entered number: " + number);
-        } 
-        catch (NumberFormatException e) {
-            System.out.println("Error: Invalid number format! Please enter digits only.");
-        }
-
-        sc.close();
-    }
-}
+SELECT students.name  --{for non-matching records}
+FROM students
+LEFT JOIN courses
+ON students.course_id = courses.id
+WHERE courses.id IS NULL;
     `,
   },
   {
-    title: "9 ArithmeticException Example",
+    title: "EXP-9 Execute Queries using Right outer JOIN operation.",
     code: `
-import java.util.Scanner;
+CREATE TABLE courses (
+  id INT PRIMARY KEY,
+  course_name VARCHAR(50)
+);
+CREATE TABLE students (
+  id INT PRIMARY KEY,
+  name VARCHAR(50),
+  course_id INT,
+  FOREIGN KEY (course_id) REFERENCES courses(id)
+);
 
-public class ArithmeticExceptionExample {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+INSERT INTO courses VALUES
+(1, 'CS'),
+(2, 'IT'),
+(3, 'Mechanical');
+INSERT INTO students VALUES
+(1, 'Jatin', 1),
+(2, 'Rahul', 2),
+(3, 'Amit', 1),
+(4, 'Suresh', NULL);
 
-        System.out.print("Enter numerator: ");
-        int numerator = sc.nextInt();
+SELECT students.name, courses.course_name
+FROM students
+RIGHT JOIN courses
+ON students.course_id = courses.id;
 
-        System.out.print("Enter denominator: ");
-        int denominator = sc.nextInt();
-
-        try {
-            int result = numerator / denominator;
-            System.out.println("Result: " + result);
-        } 
-        catch (ArithmeticException e) {
-            System.out.println("Error: Division by zero is not allowed!");
-        }
-
-        sc.close();
-    }
-}
+SELECT courses.course_name    --{for non-matching records}
+FROM students
+RIGHT JOIN courses
+ON students.course_id = courses.id
+WHERE students.id IS NULL;
     `,
   },
 
   {
-    title: "10 Multi-Level Inheritance - Maruti800",
+    title: "EXP-10 Execute Queries using Full outer JOIN operation.",
     code: `
-import java.util.Scanner;
+CREATE TABLE courses (
+  id INT PRIMARY KEY,
+  course_name VARCHAR(50)
+);
+CREATE TABLE students (
+  id INT PRIMARY KEY,
+  name VARCHAR(50),
+  course_id INT,
+  FOREIGN KEY (course_id) REFERENCES courses(id)
+);
 
-public class Maruti800 extends Maruti {
-    int speed;
+INSERT INTO courses VALUES
+(1, 'CS'),
+(2, 'IT'),
+(3, 'Mechanical');
+INSERT INTO students VALUES
+(1, 'Jatin', 1),
+(2, 'Rahul', 2),
+(3, 'Amit', 1),
+(4, 'Suresh', NULL);
 
-    void setSpeed(int s) { speed = s; }
-    void displaySpeed() { System.out.println("Speed: " + speed + " km/h"); }
+SELECT students.name, courses.course_name
+FROM students
+FULL OUTER JOIN courses
+ON students.course_id = courses.id;
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        Maruti800 car = new Maruti800();
+SELECT students.name, courses.course_name
+FROM students
+FULL OUTER JOIN courses
+ON students.course_id = courses.id
+WHERE students.id IS NULL OR courses.id IS NULL;
 
-        System.out.print("Enter Vehicle Type: ");
-        car.setVehicleType(sc.nextLine());
-        System.out.print("Enter Brand: ");
-        car.setBrand(sc.nextLine());
-        System.out.print("Enter Speed (km/h): ");
-        car.setSpeed(sc.nextInt());
 
-        System.out.println("\\n--- Vehicle Details ---");
-        car.displayVehicleType();
-        car.displayBrand();
-        car.displaySpeed();
 
-        sc.close();
-    }
-}
+--if the above things do not work then try This:-
+SELECT students.name, courses.course_name
+FROM students
+LEFT JOIN courses
+ON students.course_id = courses.id
 
-class Maruti extends Car {
-    String brand;
-    void setBrand(String b) { brand = b; }
-    void displayBrand() { System.out.println("Brand: " + brand); }
-}
+UNION
 
-class Car {
-    String vehicleType;
-    void setVehicleType(String type) { vehicleType = type; }
-    void displayVehicleType() { System.out.println("Vehicle Type: " + vehicleType); }
-}
+SELECT students.name, courses.course_name
+FROM students
+RIGHT JOIN courses
+ON students.course_id = courses.id;
     `,
   },
   {
-    title: "11 Abstract Class Example - ShapeDemo",
+    title: "EXP-11 Performing practical by using VIEWS.",
     code: `
-import java.util.Scanner;
+  CREATE TABLE students (
+  id INT PRIMARY KEY,
+  name VARCHAR(50) NOT NULL,
+  age INT CHECK (age >= 18),
+  marks INT CHECK (marks >= 0 AND marks <= 100),
+  course VARCHAR(50) NOT NULL,
+  email VARCHAR(100) UNIQUE
+);
 
-public class ShapeDemo {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+INSERT INTO students VALUES
+(1, 'Jatin', 1),
+(2, 'Rahul', 2),
+(3, 'Amit', 1),
+(4, 'Suresh', NULL);
 
-        Rectangle rect = new Rectangle();
-        System.out.println("=== Rectangle ===");
-        rect.getData(sc);
-        rect.displayArea();
+CREATE VIEW student_view AS
+SELECT name, course_id
+FROM students;
 
-        Triangle tri = new Triangle();
-        System.out.println("\\n=== Triangle ===");
-        tri.getData(sc);
-        tri.displayArea();
+--display view data:-
+SELECT * FROM student_view;
 
-        sc.close();
-    }
-}
+--update view data:-
+CREATE OR REPLACE VIEW student_view AS
+SELECT name
+FROM students;
 
-abstract class Shape {
-    double dim1, dim2;
-    void getData(Scanner sc) {
-        System.out.print("Enter first dimension: ");
-        dim1 = sc.nextDouble();
-        System.out.print("Enter second dimension: ");
-        dim2 = sc.nextDouble();
-    }
-    abstract void displayArea();
-}
-
-class Rectangle extends Shape {
-    void displayArea() { System.out.println("Area of Rectangle: " + dim1*dim2); }
-}
-
-class Triangle extends Shape {
-    void displayArea() { System.out.println("Area of Triangle: " + 0.5*dim1*dim2); }
-}
+--drop view:-
+DROP VIEW student_view;
     `,
   },
   {
-    title: "12 Design a login webpage in JSP that makes validation through Database using JDBCp",
+    title: "EXP-12 Performing practical by using TRIGGER concept.",
     code: `
-import java.util.HashMap;
-import java.util.Scanner;
+-- Clean setup
+DROP TABLE IF EXISTS student_log;
+DROP TABLE IF EXISTS students;
 
-public class LoginDemo {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+-- Create students table
+CREATE TABLE students (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(50),
+  marks INT
+);
 
-        HashMap<String, String> users = new HashMap<>();
-        users.put("NICK", "12345");
-        users.put("admin", "admin123");
-        users.put("user1", "pass1");
+-- Create log table
+CREATE TABLE student_log (
+  log_id INT AUTO_INCREMENT PRIMARY KEY,
+  message VARCHAR(100)
+);
 
-        System.out.println("=== Login Page ===");
-        System.out.print("Enter username: ");
-        String username = sc.nextLine();
-        System.out.print("Enter password: ");
-        String password = sc.nextLine();
+-- Change delimiter for trigger creation
+DELIMITER $$
 
-        if(users.containsKey(username) && users.get(username).equals(password)) {
-            System.out.println("✅ Login Successful! Welcome, " + username);
-        } else {
-            System.out.println("❌ Invalid username or password! Try again.");
-        }
+-- BEFORE INSERT trigger (fix negative marks)
+CREATE TRIGGER check_marks
+BEFORE INSERT ON students
+FOR EACH ROW
+BEGIN
+  IF NEW.marks < 0 THEN
+    SET NEW.marks = 0;
+  END IF;
+END$$
 
-        sc.close();
-    }
-}
+-- AFTER INSERT trigger (logging)
+CREATE TRIGGER after_insert_log
+AFTER INSERT ON students
+FOR EACH ROW
+BEGIN
+  INSERT INTO student_log(message)
+  VALUES (CONCAT('Inserted student: ', NEW.name));
+END$$
+
+DELIMITER ;
+
+-- Test data
+INSERT INTO students (name, marks) VALUES
+('Jatin', 85),
+('Rahul', -10),   -- will become 0
+('Amit', 70);
+
+-- Check results
+SELECT * FROM students;
+SELECT * FROM student_log;
+
+-- Drop trigger (example)
+DROP TRIGGER check_marks;
     `,
   },
   {
-    title: "13 WAP to demonstrate  method and constructor overloading",
+    title: "EXP-13 Execute queries for Exist and NOT EXIST.",
     code: `
-import java.util.Scanner;
+-- Clean setup
+DROP TABLE IF EXISTS students;
+DROP TABLE IF EXISTS courses;
 
-public class OverloadingDemo {
-    String name;
-    int age;
+-- Create tables
+CREATE TABLE courses (
+  id INT PRIMARY KEY,
+  course_name VARCHAR(50)
+);
 
-    OverloadingDemo() { name="Unknown"; age=0; }
-    OverloadingDemo(String n, int a) { name=n; age=a; }
+CREATE TABLE students (
+  id INT PRIMARY KEY,
+  name VARCHAR(50),
+  course_id INT
+);
 
-    void display() { System.out.println("Name: " + name + "\\nAge: " + age); }
-    void display(String greeting) { System.out.println(greeting + " " + name + "! Your age is " + age); }
+-- Insert data into courses
+INSERT INTO courses VALUES
+(1, 'CS'),
+(2, 'IT');
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+-- Insert data into students
+INSERT INTO students VALUES
+(1, 'Jatin', 1),
+(2, 'Rahul', 2),
+(3, 'Amit', 3),     -- no matching course
+(4, 'Suresh', NULL);
 
-        OverloadingDemo obj1 = new OverloadingDemo();
-        System.out.println("=== Object 1 ===");
-        obj1.display();
+-- EXISTS Example
+SELECT name
+FROM students s
+WHERE EXISTS (
+  SELECT 1
+  FROM courses c
+  WHERE s.course_id = c.id
+);
 
-        System.out.print("\\nEnter your name: ");
-        String n = sc.nextLine();
-        System.out.print("Enter your age: ");
-        int a = sc.nextInt();
-
-        OverloadingDemo obj2 = new OverloadingDemo(n, a);
-        System.out.println("=== Object 2 ===");
-        obj2.display();
-        obj2.display("Hello");
-
-        sc.close();
-    }
-}
+-- NOT EXISTS Example
+SELECT name
+FROM students s
+WHERE NOT EXISTS (
+  SELECT 1
+  FROM courses c
+  WHERE s.course_id = c.id
+);
     `,
   },
   {
-    title: " 14 Program to create a static website using HTML and CSS",
-    code: ` <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My Static Website</title>
-<style>
-body { font-family: Arial; margin:0; text-align:center; background:#f0f0f0; }
-header { background:#007bff; color:white; padding:15px; }
-section { padding:20px; }
-footer { background:#333; color:white; padding:10px; position:fixed; bottom:0; width:100%; }
-</style>
-</head>
-<body>
-<header><h1>Welcome to My Website</h1></header>
-<section>
-  <h2>About</h2>
-  <p>This is a simple static website created using HTML and CSS.</p>
-</section>
-<footer>&copy; 2025 My Website</footer>
-</body>
-</html>
+    title: " EXP-14 Performing practical by using DCL (Grant ,Revoke) statements.",
+    code: ` 
+CREATE DATABASE IF NOT EXISTS college_db;
+USE college_db;
+
+-- Create sample table
+DROP TABLE IF EXISTS students;
+
+CREATE TABLE students (
+  id INT PRIMARY KEY,
+  name VARCHAR(50)
+);
+
+-- Insert sample data
+INSERT INTO students VALUES
+(1, 'Jatin'),
+(2, 'Rahul');
+
+-- Create user (MySQL syntax)
+CREATE USER IF NOT EXISTS 'user1'@'localhost' IDENTIFIED BY 'password123';
+
+-- GRANT permissions
+GRANT SELECT, INSERT
+ON college_db.students
+TO 'user1'@'localhost';
+
+-- GRANT ALL privileges
+GRANT ALL PRIVILEGES
+ON college_db.students
+TO 'user1'@'localhost';
+
+-- REVOKE INSERT permission
+REVOKE INSERT
+ON college_db.students
+FROM 'user1'@'localhost';
+
+-- REVOKE ALL privileges
+REVOKE ALL PRIVILEGES
+ON college_db.students
+FROM 'user1'@'localhost';
+
+-- Apply changes
+FLUSH PRIVILEGES;
+
+--TO SHOW THE GRANTS FOR THE USER
+SHOW GRANTS FOR 'user1'@'localhost';
+
+--Replace 'user1'@'localhost' if needed
     `,
+
   }
 ];
