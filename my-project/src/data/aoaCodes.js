@@ -101,7 +101,7 @@ SELECT name FROM teachers;
   email VARCHAR(100) UNIQUE
 );
 
-INSERT INTO students (id, name, age, marks, courses, email) VALUES (1, 'Alice', 20, 85, 'cs', 'alice@example.com');
+INSERT INTO students (id, name, age, marks, course, email) VALUES (1, 'Alice', 20, 85, 'cs', 'alice@example.com');
 
 SELECT course, COUNT(*) AS total_students
 FROM students
