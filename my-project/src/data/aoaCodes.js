@@ -5,6 +5,7 @@ export const JAVA_CODES = [
     code: `
 create database school;
 use school;
+DROP TABLE IF EXISTS students;
     `,
   },
   {
