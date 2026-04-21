@@ -105,7 +105,7 @@ INSERT INTO students (id, name, age, marks, course, email) VALUES (1, 'Alice', 2
 
 SELECT course, COUNT(*) AS total_students
 FROM students
-GROUP BY course; 
+GROUP BY course;  --{groups student on courses and counts them}
 
 SELECT name, marks
 FROM students
@@ -266,9 +266,10 @@ CREATE TABLE courses (
   course_name VARCHAR(50)
 );
 CREATE TABLE students (
-    id INT PRIMARY KEY,
-    name VARCHAR(50),
-    course_id INT
+  id INT PRIMARY KEY,
+  name VARCHAR(50),
+  course_id INT,
+  FOREIGN KEY (course_id) REFERENCES courses(id)
 );
 
 INSERT INTO courses VALUES
@@ -312,12 +313,9 @@ ON students.course_id = courses.id;
     title: "EXP-11 Performing practical by using VIEWS.",
     code: `
   CREATE TABLE students (
-  id INT PRIMARY KEY,
-  name VARCHAR(50) NOT NULL,
-  age INT CHECK (age >= 18),
-  marks INT CHECK (marks >= 0 AND marks <= 100),
-  course VARCHAR(50) NOT NULL,
-  email VARCHAR(100) UNIQUE
+    id INT PRIMARY KEY,
+    name VARCHAR(50),
+    course_id INT
 );
 
 INSERT INTO students VALUES
