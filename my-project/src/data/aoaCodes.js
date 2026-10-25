@@ -258,73 +258,98 @@ except subprocess.TimeoutExpired:
     title: "CN Practical 8: Socket Programming and Traceroute",
     code: `
 import socket
-import time
+import subprocess
 
 host = input("Enter destination hostname: ").strip()
-max_hops = 15
-port = 33434
 
-try:
-    destination = socket.gethostbyname(host)
-    print("Tracing route to", host, "(", destination, ")")
+if not host:
+    print("Please enter a hostname.")
+else:
+    try:
+        ip = socket.gethostbyname(host)
+        print(f"Tracing route to {host} ({ip})")
+        print("Please wait...\\n")
 
-    for ttl in range(1, max_hops + 1):
-        receiver = socket.socket(
-            socket.AF_INET,
-            socket.SOCK_DGRAM
-        )
-        sender = socket.socket(
-            socket.AF_INET,
-            socket.SOCK_DGRAM
-        )
-
-        receiver.settimeout(2)
-        receiver.bind(("", port))
-        sender.setsockopt(
-            socket.SOL_IP,
-            socket.IP_TTL,
-            ttl
+        result = subprocess.run(
+            ["tracert", "-d", "-h", "15", "-w", "1000", host],
+            capture_output=True,
+            text=True,
+            timeout=40,
+            check=False
         )
 
-        start = time.time()
+        print(result.stdout)
 
-        try:
-            sender.sendto(b"Traceroute test", (host, port))
-            data, address = receiver.recvfrom(512)
+        if result.stderr:
+            print("Error:", result.stderr)
 
-            elapsed = (time.time() - start) * 1000
-            print(
-                ttl,
-                address[0],
-                round(elapsed, 2),
-                "ms"
-            )
+    except socket.gaierror:
+        print("DNS resolution failed. Check the hostname.")
 
-            if address[0] == destination:
-                print("Destination reached")
-                break
+    except subprocess.TimeoutExpired:
+        print("Traceroute timed out. Try again.")
 
-        except socket.timeout:
-            print(ttl, "* * * Request timed out")
+    except FileNotFoundError:
+        print("Windows tracert command was not found.")
 
-        except OSError as e:
-            print("Socket error:", e)
-            break
+    except OSError as e:
+        print("Error:", e)
 
-        finally:
-            sender.close()
-            receiver.close()
-
-except socket.gaierror:
-    print("Invalid hostname or DNS resolution failed")
-except OSError as e:
-    print("Traceroute unavailable:", e)
+print("Program finished.")
 `
   },
 
   {
-    title: "CN Practical 9A: File Transfer Server",
+    title: "CN Practical 9: File Transfer (Client & Server)",
     code: `
+# ==========================================
+# 1. CLIENT (client.py)
+# ==========================================
+import socket
+import os
+
+HOST = input("Enter server IP address (127.0.0.1 for same PC): ").strip()
+PORT = 5000
+
+path = input("Enter file path to send: ").strip()
+path = path.strip('"')
+
+try:
+    if not os.path.isfile(path):
+        raise FileNotFoundError("File does not exist")
+
+    filename = os.path.basename(path)
+
+    if "\\n" in filename or "\\r" in filename:
+        raise ValueError("Invalid filename")
+
+    size = os.path.getsize(path)
+
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client:
+        client.settimeout(30)
+        client.connect((HOST, PORT))
+
+        with open(path, "rb") as f:
+            header = f"{filename}\\n{size}\\n".encode("utf-8")
+            client.sendall(header)
+
+            while True:
+                data = f.read(4096)
+
+                if not data:
+                    break
+
+                client.sendall(data)
+
+    print("File sent successfully:", filename)
+
+except (OSError, ValueError) as e:
+    print("Client error:", e)
+
+
+# ==========================================
+# 2. SERVER (server.py)
+# ==========================================
 import socket
 import os
 
@@ -357,7 +382,7 @@ try:
         conn, addr = server.accept()
 
         with conn:
-            print("Connected:", addr)
+            print("Connected to:", addr)
 
             filename = os.path.basename(receive_line(conn))
             size = int(receive_line(conn))
@@ -366,65 +391,24 @@ try:
                 raise ValueError("Invalid filename or size")
 
             received = 0
+            output_file = "received_" + filename
 
-            with open("received_" + filename, "wb") as f:
+            with open(output_file, "wb") as f:
                 while received < size:
                     data = conn.recv(min(4096, size - received))
 
                     if not data:
-                        raise ConnectionError("Incomplete file transfer")
+                        raise ConnectionError("File transfer interrupted")
 
                     f.write(data)
                     received += len(data)
 
-            print("File received:", filename)
+            print("File received successfully!")
+            print("Saved as:", output_file)
             print("Bytes received:", received)
 
 except (OSError, ValueError, ConnectionError) as e:
     print("Server error:", e)
-`
-  },
-
-  {
-    title: "CN Practical 9B: File Transfer Client",
-    code: `
-import socket
-import os
-
-HOST = input("Enter server IP address: ").strip()
-PORT = 5000
-path = input("Enter file path: ").strip()
-
-try:
-    if not os.path.isfile(path):
-        raise FileNotFoundError("File does not exist")
-
-    filename = os.path.basename(path)
-    size = os.path.getsize(path)
-
-    if "\\n" in filename or "\\r" in filename:
-        raise ValueError("Invalid filename")
-
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client:
-        client.settimeout(30)
-        client.connect((HOST, PORT))
-
-        with open(path, "rb") as f:
-            header = f"{filename}\\n{size}\\n".encode("utf-8")
-            client.sendall(header)
-
-            while True:
-                data = f.read(4096)
-
-                if not data:
-                    break
-
-                client.sendall(data)
-
-    print("File sent successfully:", filename)
-
-except (OSError, ValueError) as e:
-    print("Client error:", e)
 `
   },
 
