@@ -1,4 +1,3 @@
-// src/data/aoaCodes.js
 
 export const JAVA_CODES = [
   {
@@ -123,8 +122,8 @@ n = int(input("Enter number of routers: "))
 print("Enter cost matrix (999 means no direct link):")
 cost = [list(map(int, input().split())) for _ in range(n)]
 
-if any(len(row) != n for row in cost):
-    raise ValueError("Each row must contain n values")
+if len(cost) != n or any(len(row) != n for row in cost):
+    raise ValueError("Enter a valid square cost matrix")
 
 dist = [row[:] for row in cost]
 next_hop = [[-1] * n for _ in range(n)]
@@ -157,43 +156,40 @@ for _ in range(n - 1):
 
 for i in range(n):
     print("\\nRouter", i)
-    print("Destination  Cost  Next Hop")
+    print("Destination | Cost | Next Hop")
 
     for j in range(n):
-        print(j, "           ", dist[i][j], "   ", next_hop[i][j])
+        print(j, "|", dist[i][j], "|", next_hop[i][j])
 `
   },
 
   {
-    title: "CN Practical 6: Socket Primitives and Ping",
+    title: "CN Practical 6: Socket Programming and Ping",
     code: `
-import platform
-import subprocess
+import socket
 
-host = input("Enter IP address or hostname: ")
-
-if platform.system() == "Windows":
-    command = ["ping", "-n", "4", host]
-else:
-    command = ["ping", "-c", "4", host]
+host = input("Enter hostname (e.g. google.com): ")
 
 try:
-    result = subprocess.run(
-        command,
-        capture_output=True,
-        text=True,
-        timeout=20
-    )
+    ip = socket.gethostbyname(host)
+    print("IP Address:", ip)
 
-    print(result.stdout)
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.settimeout(5)
 
-    if result.returncode == 0:
-        print("Host is reachable")
+    result = s.connect_ex((ip, 80))
+    s.close()
+
+    if result == 0:
+        print("Host is reachable on port 80")
     else:
-        print("Ping failed")
+        print("Connection failed or port 80 is blocked")
 
-except (subprocess.TimeoutExpired, FileNotFoundError) as e:
-    print("Error:", e)
+except socket.gaierror:
+    print("Hostname could not be resolved")
+
+except OSError as e:
+    print("Network error:", e)
 `
   },
 
@@ -206,12 +202,21 @@ import subprocess
 
 print("Hostname:", socket.gethostname())
 
-try:
-    print("\\nIP addresses:")
+s = None
 
-    addresses = socket.getaddrinfo(
-        socket.gethostname(), None
-    )
+try:
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.connect(("192.0.2.1", 80))
+    print("Local IPv4 address:", s.getsockname()[0])
+except OSError:
+    print("Could not determine local IPv4 address")
+finally:
+    if s:
+        s.close()
+
+try:
+    print("\\nResolved IP addresses:")
+    addresses = socket.getaddrinfo(socket.gethostname(), None)
 
     for ip in sorted(set(item[4][0] for item in addresses)):
         print(ip)
@@ -222,7 +227,7 @@ except socket.gaierror as e:
 system = platform.system()
 
 if system == "Windows":
-    command = ["ipconfig"]
+    command = ["ipconfig", "/all"]
 elif system == "Darwin":
     command = ["ifconfig"]
 else:
@@ -232,48 +237,88 @@ try:
     result = subprocess.run(
         command,
         capture_output=True,
-        text=True
+        text=True,
+        timeout=15
     )
 
     print("\\nNetwork configuration:")
     print(result.stdout)
 
+    if result.returncode != 0:
+        print(result.stderr)
+
 except FileNotFoundError:
-    print("Configuration command not found")
+    print("Network configuration command is unavailable")
+except subprocess.TimeoutExpired:
+    print("Command timed out")
 `
   },
 
   {
     title: "CN Practical 8: Socket Programming and Traceroute",
     code: `
-import platform
-import subprocess
+import socket
+import time
 
-host = input("Enter destination hostname or IP: ")
-
-if platform.system() == "Windows":
-    command = ["tracert", host]
-else:
-    command = ["traceroute", host]
+host = input("Enter destination hostname: ").strip()
+max_hops = 15
+port = 33434
 
 try:
-    result = subprocess.run(
-        command,
-        capture_output=True,
-        text=True,
-        timeout=120
-    )
+    destination = socket.gethostbyname(host)
+    print("Tracing route to", host, "(", destination, ")")
 
-    print(result.stdout)
+    for ttl in range(1, max_hops + 1):
+        receiver = socket.socket(
+            socket.AF_INET,
+            socket.SOCK_DGRAM
+        )
+        sender = socket.socket(
+            socket.AF_INET,
+            socket.SOCK_DGRAM
+        )
 
-    if result.stderr:
-        print(result.stderr)
+        receiver.settimeout(2)
+        receiver.bind(("", port))
+        sender.setsockopt(
+            socket.SOL_IP,
+            socket.IP_TTL,
+            ttl
+        )
 
-except subprocess.TimeoutExpired:
-    print("Traceroute timed out")
+        start = time.time()
 
-except FileNotFoundError:
-    print("Traceroute command not installed")
+        try:
+            sender.sendto(b"Traceroute test", (host, port))
+            data, address = receiver.recvfrom(512)
+
+            elapsed = (time.time() - start) * 1000
+            print(
+                ttl,
+                address[0],
+                round(elapsed, 2),
+                "ms"
+            )
+
+            if address[0] == destination:
+                print("Destination reached")
+                break
+
+        except socket.timeout:
+            print(ttl, "* * * Request timed out")
+
+        except OSError as e:
+            print("Socket error:", e)
+            break
+
+        finally:
+            sender.close()
+            receiver.close()
+
+except socket.gaierror:
+    print("Invalid hostname or DNS resolution failed")
+except OSError as e:
+    print("Traceroute unavailable:", e)
 `
   },
 
@@ -296,40 +341,47 @@ def receive_line(conn):
             raise ConnectionError("Client disconnected")
 
         if ch == b"\\n":
-            return data.decode()
+            return data.decode("utf-8")
 
         data.extend(ch)
 
-with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server:
-    server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    server.bind((HOST, PORT))
-    server.listen(1)
+try:
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server:
+        server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        server.bind((HOST, PORT))
+        server.listen(1)
 
-    print("Waiting for client...")
-    conn, addr = server.accept()
+        print("Server listening on port", PORT)
+        print("Waiting for client...")
 
-    with conn:
-        print("Connected:", addr)
+        conn, addr = server.accept()
 
-        filename = os.path.basename(receive_line(conn))
-        size = int(receive_line(conn))
+        with conn:
+            print("Connected:", addr)
 
-        if not filename or size < 0:
-            raise ValueError("Invalid filename or file size")
+            filename = os.path.basename(receive_line(conn))
+            size = int(receive_line(conn))
 
-        with open("received_" + filename, "wb") as f:
-            remaining = size
+            if not filename or size < 0:
+                raise ValueError("Invalid filename or size")
 
-            while remaining > 0:
-                data = conn.recv(min(4096, remaining))
+            received = 0
 
-                if not data:
-                    raise ConnectionError("Incomplete file transfer")
+            with open("received_" + filename, "wb") as f:
+                while received < size:
+                    data = conn.recv(min(4096, size - received))
 
-                f.write(data)
-                remaining -= len(data)
+                    if not data:
+                        raise ConnectionError("Incomplete file transfer")
 
-        print("File received successfully")
+                    f.write(data)
+                    received += len(data)
+
+            print("File received:", filename)
+            print("Bytes received:", received)
+
+except (OSError, ValueError, ConnectionError) as e:
+    print("Server error:", e)
 `
   },
 
@@ -339,18 +391,27 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server:
 import socket
 import os
 
-HOST = input("Enter server IP address: ")
+HOST = input("Enter server IP address: ").strip()
 PORT = 5000
-path = input("Enter file path: ")
+path = input("Enter file path: ").strip()
 
 try:
-    size = os.path.getsize(path)
-    filename = os.path.basename(path)
+    if not os.path.isfile(path):
+        raise FileNotFoundError("File does not exist")
 
-    with open(path, "rb") as f:
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client:
-            client.connect((HOST, PORT))
-            client.sendall(f"{filename}\\n{size}\\n".encode())
+    filename = os.path.basename(path)
+    size = os.path.getsize(path)
+
+    if "\\n" in filename or "\\r" in filename:
+        raise ValueError("Invalid filename")
+
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client:
+        client.settimeout(30)
+        client.connect((HOST, PORT))
+
+        with open(path, "rb") as f:
+            header = f"{filename}\\n{size}\\n".encode("utf-8")
+            client.sendall(header)
 
             while True:
                 data = f.read(4096)
@@ -360,18 +421,19 @@ try:
 
                 client.sendall(data)
 
-    print("File sent successfully")
+    print("File sent successfully:", filename)
 
 except (OSError, ValueError) as e:
-    print("Error:", e)
+    print("Client error:", e)
 `
   },
 
   {
     title: "CN Practical 10: Network Commands",
     code: `
-import subprocess
 import platform
+import subprocess
+import shutil
 
 system = platform.system()
 
@@ -394,40 +456,38 @@ while True:
         print("Invalid choice")
         continue
 
+    host = ""
+
     if choice in {"1", "2", "4", "5"}:
         host = input("Enter hostname or IP: ").strip()
 
-        if not host:
-            print("Host cannot be empty")
+        if not host or any(ch.isspace() for ch in host):
+            print("Invalid hostname or IP")
             continue
 
     if choice == "1":
-        cmd = (
-            ["ping", "-n", "4", host]
-            if system == "Windows"
-            else ["ping", "-c", "4", host]
-        )
+        if system == "Windows":
+            cmd = ["ping", "-n", "4", host]
+        else:
+            cmd = ["ping", "-c", "4", host]
 
     elif choice == "2":
-        cmd = (
-            ["tracert", host]
-            if system == "Windows"
-            else ["traceroute", host]
-        )
+        if system == "Windows":
+            cmd = ["tracert", "-d", "-h", "15", host]
+        else:
+            cmd = ["traceroute", "-n", "-m", "15", host]
 
     elif choice == "3":
-        cmd = (
-            ["netstat", "-ano"]
-            if system == "Windows"
-            else ["netstat", "-an"]
-        )
+        if system == "Windows":
+            cmd = ["netstat", "-ano"]
+        else:
+            cmd = ["netstat", "-an"]
 
     elif choice == "4":
         if system != "Windows":
             print("Pathping is available on Windows only")
             continue
-
-        cmd = ["pathping", host]
+        cmd = ["pathping", "-n", host]
 
     elif choice == "5":
         cmd = ["nslookup", host]
@@ -435,12 +495,18 @@ while True:
     else:
         cmd = ["arp", "-a"]
 
+    if shutil.which(cmd[0]) is None:
+        print(cmd[0], "command is unavailable on this system")
+        continue
+
     try:
+        print("\\nExecuting:", " ".join(cmd))
+
         result = subprocess.run(
             cmd,
             capture_output=True,
             text=True,
-            timeout=120
+            timeout=60
         )
 
         print(result.stdout)
@@ -448,8 +514,15 @@ while True:
         if result.stderr:
             print(result.stderr)
 
-    except (FileNotFoundError, subprocess.TimeoutExpired) as e:
-        print("Error:", e)
+        if result.returncode != 0:
+            print("Command returned exit code:", result.returncode)
+
+    except subprocess.TimeoutExpired:
+        print("Command timed out")
+    except OSError as e:
+        print("Execution error:", e)
+
+print("Program terminated")
 `
   }
 ];
